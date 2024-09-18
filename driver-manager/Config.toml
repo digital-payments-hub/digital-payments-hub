@@ -1,0 +1,29 @@
+# driver inbound endpoint format : 
+#  <transport>://<hostname>:<port>
+#  eg: tcp://localhost:8085
+[[drivers]]
+name = "lankapay"
+code = "LK"
+[drivers.inbound]
+transport = "tcp"
+port = 8085
+[drivers.outbound]
+baseUrl = "http://localhost:9093"
+
+[[drivers]]
+name = "paynet"
+code = "MY"
+[drivers.inbound]
+transport = "tcp"
+port = 8086
+[drivers.outbound]
+baseUrl = "http://localhost:9094"
+
+[[drivers]]
+name = "payx"
+code = "HK"
+[drivers.inbound]
+transport = "http"
+port = 8087
+[drivers.outbound]
+baseUrl = "http://localhost:9095"

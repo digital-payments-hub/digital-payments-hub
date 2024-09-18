@@ -98,6 +98,9 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
 ]
+modules = [
+	{org = "ballerina", packageName = "io", moduleName = "io"}
+]
 
 [[package]]
 org = "ballerina"
@@ -175,6 +178,9 @@ version = "0.0.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
+modules = [
+	{org = "ballerina", packageName = "lang.runtime", moduleName = "lang.runtime"}
+]
 
 [[package]]
 org = "ballerina"
@@ -202,6 +208,9 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"},
 	{org = "ballerina", name = "observe"}
+]
+modules = [
+	{org = "ballerina", packageName = "log", moduleName = "log"}
 ]
 
 [[package]]
@@ -247,6 +256,15 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
+name = "random"
+version = "1.5.0"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "time"}
+]
+
+[[package]]
+org = "ballerina"
 name = "task"
 version = "2.5.0"
 dependencies = [
@@ -256,10 +274,25 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
+name = "tcp"
+version = "1.11.0"
+dependencies = [
+    {org = "ballerina", name = "crypto"},
+    {org = "ballerina", name = "jballerina.java"}
+]
+modules = [
+    {org = "ballerina", packageName = "tcp", moduleName = "tcp"}
+]
+
+[[package]]
+org = "ballerina"
 name = "time"
-version = "2.4.0"
+version = "2.5.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
+]
+modules = [
+	{org = "ballerina", packageName = "time", moduleName = "time"}
 ]
 
 [[package]]
@@ -268,6 +301,51 @@ name = "url"
 version = "2.4.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
+]
+
+[[package]]
+org = "ballerina"
+name = "uuid"
+version = "1.8.0"
+dependencies = [
+    {org = "ballerina", name = "crypto"},
+    {org = "ballerina", name = "jballerina.java"},
+    {org = "ballerina", name = "lang.int"},
+    {org = "ballerina", name = "time"}
+]
+modules = [
+    {org = "ballerina", packageName = "uuid", moduleName = "uuid"}
+]
+
+[[package]]
+org = "ballerinax"
+name = "financial.iso20022"
+version = "0.0.1"
+dependencies = [
+	{org = "ballerina", name = "data.xmldata"}
+]
+
+[[package]]
+org = "ballerinai"
+name = "observe"
+version = "0.0.0"
+dependencies = [
+    {org = "ballerina", name = "jballerina.java"},
+    {org = "ballerina", name = "observe"}
+]
+
+[[package]]
+org = "ballerinax"
+name = "kafka"
+version = "4.2.0"
+dependencies = [
+    {org = "ballerina", name = "crypto"},
+    {org = "ballerina", name = "jballerina.java"},
+    {org = "ballerina", name = "uuid"},
+    {org = "ballerinai", name = "observe"}
+]
+modules = [
+    {org = "ballerinax", packageName = "kafka", moduleName = "kafka"}
 ]
 
 [[package]]
@@ -280,4 +358,41 @@ dependencies = [
 modules = [
 	{org = "digitalpaymentshub", packageName = "digital.payments.hub.driver_manager", moduleName = "digital.payments.hub.driver_manager"}
 ]
+
+[[package]]
+org = "digitalpaymentshub"
+name = "digital.payments.hub.paynet"
+version = "0.0.3"
+dependencies = [
+	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "log"},
+	{org = "ballerina", name = "mime"},
+	{org = "ballerina", name = "random"},
+	{org = "ballerina", name = "time"},
+	{org = "ballerinax", name = "financial.iso20022"}
+]
+modules = [
+	{org = "digitalpaymentshub", packageName = "digital.payments.hub.paynet", moduleName = "digital.payments.hub.paynet"},
+	{org = "digitalpaymentshub", packageName = "digital.payments.hub.paynet", moduleName = "digital.payments.hub.paynet.models"},
+	{org = "digitalpaymentshub", packageName = "digital.payments.hub.paynet", moduleName = "digital.payments.hub.paynet.util"}
+]
+
+[[package]]
+org = "digitalpaymentshub"
+name = "digital.payments.hub.driver_manager"
+version = "0.0.1"
+dependencies = [
+    {org = "ballerina", name = "http"},
+    {org = "ballerina", name = "io"},
+    {org = "ballerina", name = "lang.runtime"},
+    {org = "ballerina", name = "log"},
+    {org = "ballerina", name = "tcp"},
+    {org = "ballerina", name = "time"},
+    {org = "ballerina", name = "uuid"},
+    {org = "ballerinax", name = "kafka"}
+]
+modules = [
+    {org = "digitalpaymentshub", packageName = "digital.payments.hub.driver_manager", moduleName = "digital.payments.hub.driver_manager"}
+]
+
 
