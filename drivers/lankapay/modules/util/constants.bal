@@ -20,3 +20,7 @@ public const TYPE_MTI_0430 = "0430";
 public const TYPE_MTI_0421 = "0421";
 public const TYPE_MTI_0800 = "0800";
 public const TYPE_MTI_0810 = "0810";
+
+public const DESTINATION_COUNTRY_HEADER = "x-wso2-destination-code";
+
+public const DESTINATION_COUNTRY_CODE = "DestinationCountryCode";
