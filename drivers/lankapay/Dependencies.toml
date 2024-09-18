@@ -53,10 +53,13 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "data.jsondata"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.object"}
+]
+modules = [
+	{org = "ballerina", packageName = "data.jsondata", moduleName = "data.jsondata"}
 ]
 
 [[package]]
@@ -126,14 +129,6 @@ version = "0.0.0"
 
 [[package]]
 org = "ballerina"
-name = "jballerina.java.arrays"
-version = "1.4.0"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"}
-]
-
-[[package]]
-org = "ballerina"
 name = "jwt"
 version = "2.13.0"
 dependencies = [
@@ -172,6 +167,9 @@ version = "0.0.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
+modules = [
+	{org = "ballerina", packageName = "lang.decimal", moduleName = "lang.decimal"}
+]
 
 [[package]]
 org = "ballerina"
@@ -194,6 +192,9 @@ name = "lang.regexp"
 version = "0.0.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
+]
+modules = [
+	{org = "ballerina", packageName = "lang.regexp", moduleName = "lang.regexp"}
 ]
 
 [[package]]
@@ -278,15 +279,6 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
-name = "random"
-version = "1.5.0"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "time"}
-]
-
-[[package]]
-org = "ballerina"
 name = "task"
 version = "2.5.0"
 dependencies = [
@@ -297,9 +289,12 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "time"
-version = "2.4.0"
+version = "2.5.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
+]
+modules = [
+	{org = "ballerina", packageName = "time", moduleName = "time"}
 ]
 
 [[package]]
@@ -313,7 +308,7 @@ dependencies = [
 [[package]]
 org = "ballerinax"
 name = "financial.iso20022"
-version = "0.0.1"
+version = "0.0.4"
 dependencies = [
 	{org = "ballerina", name = "data.xmldata"}
 ]
@@ -324,34 +319,16 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "financial.iso8583"
-version = "0.0.1"
+version = "0.1.1"
 dependencies = [
 	{org = "ballerina", name = "constraint"},
 	{org = "ballerina", name = "data.jsondata"},
-	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "jballerina.java.arrays"},
-	{org = "ballerina", name = "log"},
-	{org = "ballerina", name = "mime"},
-	{org = "ballerina", name = "time"},
-	{org = "iso", name = "iso20022"}
+	{org = "ballerina", name = "jballerina.java"}
 ]
 modules = [
 	{org = "ballerinax", packageName = "financial.iso8583", moduleName = "financial.iso8583"},
 	{org = "ballerinax", packageName = "financial.iso8583", moduleName = "financial.iso8583.io.ballerinax.iso8583"},
-	{org = "ballerinax", packageName = "financial.iso8583", moduleName = "financial.iso8583.java.io"},
 	{org = "ballerinax", packageName = "financial.iso8583", moduleName = "financial.iso8583.java.lang"}
-]
-
-[[package]]
-org = "digitalpaymentshub"
-name = "digital.payments.hub.driver_manager"
-version = "0.0.1"
-dependencies = [
-	{org = "digitalpaymentshub", name = "digital.payments.hub.paynet"}
-]
-modules = [
-	{org = "digitalpaymentshub", packageName = "digital.payments.hub.driver_manager", moduleName = "digital.payments.hub.driver_manager"}
 ]
 
 [[package]]
@@ -360,35 +337,17 @@ name = "digital.payments.hub.lankapay"
 version = "0.0.1"
 dependencies = [
 	{org = "ballerina", name = "constraint"},
+	{org = "ballerina", name = "data.jsondata"},
 	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "lang.decimal"},
+	{org = "ballerina", name = "lang.regexp"},
 	{org = "ballerina", name = "log"},
+	{org = "ballerina", name = "time"},
 	{org = "ballerinax", name = "financial.iso20022"},
-	{org = "ballerinax", name = "financial.iso8583"},
-	{org = "digitalpaymentshub", name = "digital.payments.hub.driver_manager"}
+	{org = "ballerinax", name = "financial.iso8583"}
 ]
 modules = [
 	{org = "digitalpaymentshub", packageName = "digital.payments.hub.lankapay", moduleName = "digital.payments.hub.lankapay"},
 	{org = "digitalpaymentshub", packageName = "digital.payments.hub.lankapay", moduleName = "digital.payments.hub.lankapay.util"}
-]
-
-[[package]]
-org = "digitalpaymentshub"
-name = "digital.payments.hub.paynet"
-version = "0.0.3"
-dependencies = [
-	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "log"},
-	{org = "ballerina", name = "mime"},
-	{org = "ballerina", name = "random"},
-	{org = "ballerina", name = "time"},
-	{org = "ballerinax", name = "financial.iso20022"}
-]
-
-[[package]]
-org = "iso"
-name = "iso20022"
-version = "0.1.0"
-dependencies = [
-	{org = "ballerina", name = "data.xmldata"}
 ]
 

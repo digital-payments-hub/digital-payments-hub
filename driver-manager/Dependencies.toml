@@ -49,14 +49,6 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
-name = "data.xmldata"
-version = "0.1.4"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"}
-]
-
-[[package]]
-org = "ballerina"
 name = "file"
 version = "1.10.0"
 dependencies = [
@@ -92,6 +84,10 @@ dependencies = [
 	{org = "ballerina", name = "observe"},
 	{org = "ballerina", name = "time"},
 	{org = "ballerina", name = "url"}
+]
+modules = [
+	{org = "ballerina", packageName = "http", moduleName = "http"},
+	{org = "ballerina", packageName = "http", moduleName = "http.httpscerr"}
 ]
 
 [[package]]
@@ -251,15 +247,6 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
-name = "random"
-version = "1.5.0"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "time"}
-]
-
-[[package]]
-org = "ballerina"
 name = "task"
 version = "2.5.0"
 dependencies = [
@@ -284,39 +271,13 @@ dependencies = [
 ]
 
 [[package]]
-org = "ballerinax"
-name = "financial.iso20022"
-version = "0.0.1"
-dependencies = [
-	{org = "ballerina", name = "data.xmldata"}
-]
-
-[[package]]
 org = "digitalpaymentshub"
 name = "digital.payments.hub.driver_manager"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
-	{org = "digitalpaymentshub", name = "digital.payments.hub.paynet"}
+	{org = "ballerina", name = "http"}
 ]
 modules = [
 	{org = "digitalpaymentshub", packageName = "digital.payments.hub.driver_manager", moduleName = "digital.payments.hub.driver_manager"}
-]
-
-[[package]]
-org = "digitalpaymentshub"
-name = "digital.payments.hub.paynet"
-version = "0.0.3"
-dependencies = [
-	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "log"},
-	{org = "ballerina", name = "mime"},
-	{org = "ballerina", name = "random"},
-	{org = "ballerina", name = "time"},
-	{org = "ballerinax", name = "financial.iso20022"}
-]
-modules = [
-	{org = "digitalpaymentshub", packageName = "digital.payments.hub.paynet", moduleName = "digital.payments.hub.paynet"},
-	{org = "digitalpaymentshub", packageName = "digital.payments.hub.paynet", moduleName = "digital.payments.hub.paynet.models"},
-	{org = "digitalpaymentshub", packageName = "digital.payments.hub.paynet", moduleName = "digital.payments.hub.paynet.util"}
 ]
 

@@ -1,16 +1,10 @@
 [package]
 org = "digitalpaymentshub"
 name = "digital.payments.hub.driver_manager"
-version = "0.0.1"
+version = "0.0.2"
 distribution = "2201.9.2"
 authors = ["Ballerina"]
 visibility="private"
-
-[[dependency]]
-org = "digitalpaymentshub"
-name = "digital.payments.hub.paynet"
-version = "0.0.3"
-repository="local"
 
 [[dependency]]
 org = "ballerinax"
