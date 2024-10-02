@@ -660,7 +660,7 @@
             class="org.jpos.iso.IFA_LLLCHAR"/>
     <isofield
             id="128"
-            length="8"
+            length="4"
             name="MAC 2"
             class="org.jpos.iso.IFA_BINARY"/>
 </isopackager>

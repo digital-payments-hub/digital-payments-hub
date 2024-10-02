@@ -108,8 +108,9 @@ function getProxyResolution(iso20022:FIToFICstmrCdtTrf isoPacs008Msg, string cor
 function postPaynetProxyRegistration(iso20022:FIToFICstmrCdtTrf isoPacs008Msg, string correlationId) 
     returns models:fundTransferResponse|error {
 
-    models:fundTransfer|error proxyRegistrationPayload = transformPacs008toFundTransfer(isoPacs008Msg);
-    if proxyRegistrationPayload is models:fundTransfer {
+
+    // models:fundTransfer|error proxyRegistrationPayload = transformPacs008toFundTransfer(isoPacs008Msg);
+    // if proxyRegistrationPayload is models:fundTransfer {
         string bicCode = isoPacs008Msg.CdtTrfTxInf[0].DbtrAcct?.Id?.Othr?.Id ?: "";
         string xBusinessMsgId = check generateXBusinessMsgId(bicCode);
         map<string> headers = {
@@ -124,14 +125,15 @@ function postPaynetProxyRegistration(iso20022:FIToFICstmrCdtTrf isoPacs008Msg, s
             driver.code + "-driver", driver.code + "-network", "success", "N/A");
         util:publishEvent(forwardingToNetworkEvent);
         models:fundTransferResponse response = 
-            check util:paymentNetworkClient->post("/v1/picasso-guard/banks/nad/v2/register", proxyRegistrationPayload, headers);
+            // check util:paymentNetworkClient->post("/v1/picasso-guard/banks/nad/v2/register", proxyRegistrationPayload, headers);
+            check util:paymentNetworkClient->post("/v1/picasso-guard/banks/nad/v2/register", isoPacs008Msg, headers);
         util:Event receivedFromNetworkEvent = util:createEvent(correlationId, util:RECEIVED_FROM_PAYMENT_NETWORK, 
             driver.code + "-network", driver.code + "-driver", "success", "N/A");
         util:publishEvent(receivedFromNetworkEvent);
         log:printDebug("Response received from Paynet: " + response.toBalString());
         return response;
-    } else {
-        log:printError("Error while building proxy registration payload: " + proxyRegistrationPayload.message());
-        return error("Error while building proxy registration payload: " + proxyRegistrationPayload.message());
-    }
+    // } else {
+    //     log:printError("Error while building proxy registration payload: " + proxyRegistrationPayload.message());
+    //     return error("Error while building proxy registration payload: " + proxyRegistrationPayload.message());
+    // }
 };

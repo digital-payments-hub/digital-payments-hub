@@ -20,6 +20,13 @@ import ballerina/data.jsondata;
 import ballerina/http;
 import ballerina/log;
 import ballerina/time;
+import ballerinax/financial.iso20022;
+
+json receivedData = {"accountName": "",
+                     "originatingBank": "",
+                    "destinationBank": "",
+                    "amount": "",
+                    "isomsg":""};
 
 # A service representing a network-accessible API
 # bound to port `9090`.
@@ -34,8 +41,8 @@ service /v1/picasso\-guard/banks/nad/v2 on new http:Listener(9301) {
         returns error? {
 
         string xBusinessMsgId = check req.getHeader("X-Business-Message-Id");
-        log:printInfo("Received a resolution request for proxy: " + proxy + " of type: " + proxyType +
-                " with business message ID: " + xBusinessMsgId);
+        log:printDebug(string `[YPay Payment Switch] Received a resolution request for proxy: ${proxy} of type: ${proxyType} with business message id: ${xBusinessMsgId}`);
+        log:printDebug(string `[YPay Payment Switch] Received a proxy resolution message [id: ${xBusinessMsgId}].`);
         time:Utc utcTime = time:utcNow();
         string utcString = time:utcToString(utcTime);
 
@@ -69,72 +76,103 @@ service /v1/picasso\-guard/banks/nad/v2 on new http:Listener(9301) {
                         Tp: proxyType,
                         Val: proxy
                     },
-                Regn: [
-                    {
-                        RegnId: "0075800025",
-                        DsplNm: "Bank Account",
-                        Agt: {
-                            FinInstnId: {
-                                Othr: {
-                                    Id: "AIBMMYKLXXX"
-                                }
-                            }
-                        },
-                        Acct: {
-                            Id: {
-                                Othr: {
-                                    Id: "111222333444"
+                    Regn: [
+                        {
+                            RegnId: "0075800025",
+                            DsplNm: "Bank Account",
+                            Agt: {
+                                FinInstnId: {
+                                    Othr: {
+                                        Id: "AIBMMYKLXXX"
+                                    }
                                 }
                             },
-                            Nm: "ACCOUNT1"
+                            Acct: {
+                                Id: {
+                                    Othr: {
+                                        Id: "111222333444"
+                                    }
+                                },
+                                Nm: "ACCOUNT1"
+                            },
+                            PreAuthrsd: ""
                         },
-                        PreAuthrsd: ""
-                    },
-                    {
-                        RegnId: "0075800025",
-                        DsplNm: "Bank Account",
-                        Agt: {
-                            FinInstnId: {
-                                Othr: {
-                                    Id: "AIBMMYKLXXX"
-                                }
-                            }
-                        },
-                        Acct: {
-                            Id: {
-                                Othr: {
-                                    Id: "555666777888"
+                        {
+                            RegnId: "0075800025",
+                            DsplNm: "Bank Account",
+                            Agt: {
+                                FinInstnId: {
+                                    Othr: {
+                                        Id: "AIBMMYKLXXX"
+                                    }
                                 }
                             },
-                            Nm: "ACCOUNT2"
-                        },
-                        PreAuthrsd: ""
-                    }
-                ]}
+                            Acct: {
+                                Id: {
+                                    Othr: {
+                                        Id: "555666777888"
+                                    }
+                                },
+                                Nm: "ACCOUNT2"
+                            },
+                            PreAuthrsd: ""
+                        }
+                    ]
+                }
             },
             OrgnlGrpInf: {
                 OrgnlMsgId: xBusinessMsgId,
                 OrgnlMsgNmId: ""
             }
         };
+        log:printDebug(string `[YPay Payment Switch] Responding to the proxy resolution message [id: ${xBusinessMsgId}].`, Message = response.toJson());
         check caller->respond(response);
     }
 
-    isolated resource function post register(http:Caller caller, http:Request req) returns error? {
+    resource function post register(http:Caller caller, http:Request req) returns error? {
 
-        json payload = check req.getJsonPayload();
-        log:printInfo("Received a registration request with payload: " + payload.toString());
-        models:FundTransfer fundTransferPayload = check jsondata:parseAsType(payload);
         string xBusinessMsgId = check req.getHeader("X-Business-Message-Id");
+        json payload = check req.getJsonPayload();
+        log:printDebug(string `[YPay Payment Switch] Received a fund transfer message [id: ${xBusinessMsgId}].`, Message = payload);
+        // models:FundTransfer fundTransferPayload = check jsondata:parseAsType(payload);
+        iso20022:FIToFICstmrCdtTrf isoPacs008 = check jsondata:parseAsType(payload);
+
+        if (isoPacs008 is iso20022:FIToFICstmrCdtTrf) {
+            receivedData = {
+                "accountName": (isoPacs008.CdtTrfTxInf[0].Dbtr.Nm ?: ""),
+                "originatingBank": (isoPacs008.CdtTrfTxInf[0].DbtrAcct?.Id?.Othr?.Id ?: ""),
+                "destinationBank": (isoPacs008.CdtTrfTxInf[0].CdtrAgt.FinInstnId.Othr?.Id ?: ""),
+                "amount": (isoPacs008.CdtTrfTxInf[0].IntrBkSttlmAmt.\#content).toString(),
+                "isomsg": isoPacs008.toJson()
+            };
+
+            log:printDebug(string `[YPay Payment Switch] Fund transfer detials received [id: ${xBusinessMsgId}].`, Message = receivedData.toJson());
+            // log:printDebug("account id: " + (isoPacs008.CdtTrfTxInf[0].Dbtr.Nm ?: ""));
+            // log:printDebug("agent id: " + (isoPacs008.CdtTrfTxInf[0].CdtrAgt.FinInstnId.Othr?.Id ?: ""));
+            // log:printDebug("amount: " + (isoPacs008.CdtTrfTxInf[0].IntrBkSttlmAmt.\#content).toString());
+
+
+        }
         models:FundTransferResponse response = {
             data: {
                 businessMessageId: xBusinessMsgId,
-                createdDateTime: fundTransferPayload.data.createdDateTime,
+                createdDateTime: isoPacs008.GrpHdr.CreDtTm,
                 code: "ACTC",
                 reason: "U000",
                 registrationId: "0075800039"
             }
         };
+        log:printDebug(string `[YPay Payment Switch] Responding to the fund transfer message [id: ${xBusinessMsgId}].`, Message = response.toJson());
         check caller->respond(response);
+    }
+}
+
+service / on new http:Listener(5601) {
+    resource function get data(http:Caller caller) returns http:ListenerError? {
+        http:Response httpResponse = new;
+        httpResponse.setJsonPayload(receivedData);
+        httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+        httpResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        check caller->respond(httpResponse);
     }
 }
