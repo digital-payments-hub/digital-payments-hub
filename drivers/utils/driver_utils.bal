@@ -283,7 +283,7 @@ class DestinationClientInitializationJob {
             httpClientMap.removeAll();
             foreach var metadata in metadataList {
                 string countryCode = metadata.countryCode;
-                http:Client|error destinationHttpClient = new (metadata.paymentEndpoint);
+                http:Client|error destinationHttpClient = new (metadata.driverApiEndpoint);
                 // Add the client to the map with countryCode as the key
                 if (destinationHttpClient is http:Client) {
                     httpClientMap[countryCode] = destinationHttpClient;

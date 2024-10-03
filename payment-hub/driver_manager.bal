@@ -15,44 +15,40 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/log;
+
+// import ballerina/log;
+
+import digitalpaymentshub/driver.utils;
 
 configurable int port = 9090;
 
-type DriverMetadata readonly & record {
-
-    string driverName;
-    string countryCode;
-    string paymentEndpoint;
-};
-
 service /payments\-hub on new http:Listener(port) {
 
-    map<DriverMetadata> metadataMap = {};
+    map<utils:DriverMetadata> metadataMap = {};
 
-    resource function get metadata() returns DriverMetadata[] {
+    // resource function get metadata() returns utils:DriverMetadata[] {
 
-        log:printDebug("Received metadata request for all countries");
-        DriverMetadata[] metadataArray = self.metadataMap.toArray();
-        return metadataArray;
-    }
+    //     log:printDebug("Received metadata request for all countries");
+    //     utils:DriverMetadata[] metadataArray = self.metadataMap.toArray();
+    //     return metadataArray;
+    // }
 
-    resource function get metadata/[string countryCode]() returns DriverMetadata|http:NotFound {
+    // resource function get metadata/[string countryCode]() returns utils:DriverMetadata|http:NotFound {
 
-        log:printDebug("Received metadata request for country code " + countryCode);
-        DriverMetadata? metadata = self.metadataMap[countryCode];
-        if metadata is () {
-            return http:NOT_FOUND;
-        } else {
-            return metadata;
-        }
-    }
+    //     log:printDebug("Received metadata request for country code " + countryCode);
+    //     utils:DriverMetadata? metadata = self.metadataMap[countryCode];
+    //     if metadata is () {
+    //         return http:NOT_FOUND;
+    //     } else {
+    //         return metadata;
+    //     }
+    // }
 
-    resource function post register(@http:Payload DriverMetadata metadata) returns DriverMetadata {
+    // resource function post register(@http:Payload utils:DriverMetadata metadata) returns utils:DriverMetadata {
 
-        log:printDebug("Received driver registration request");
-        self.metadataMap[metadata.countryCode] = metadata;
-        log:printInfo(metadata.driverName + " driver registered in payments hub with code " + metadata.countryCode);
-        return metadata;
-    }
+    //     log:printDebug("Received driver registration request");
+    //     self.metadataMap[metadata.countryCode] = metadata;
+    //     log:printInfo(metadata.driverName + " driver registered in payments hub with code " + metadata.countryCode);
+    //     return metadata;
+    // }
 }

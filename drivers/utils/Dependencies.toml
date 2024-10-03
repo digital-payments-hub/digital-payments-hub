@@ -310,8 +310,8 @@ modules = [
 
 [[package]]
 org = "digitalpaymentshub"
-name = "drivers.util"
-version = "0.0.14"
+name = "driver.utils"
+version = "0.0.15"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "lang.runtime"},
@@ -322,6 +322,6 @@ dependencies = [
 	{org = "ballerina", name = "uuid"}
 ]
 modules = [
-	{org = "digitalpaymentshub", packageName = "drivers.util", moduleName = "drivers.util"}
+	{org = "digitalpaymentshub", packageName = "driver.utils", moduleName = "driver.utils"}
 ]
 

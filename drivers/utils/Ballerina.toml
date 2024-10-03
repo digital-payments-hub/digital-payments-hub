@@ -1,5 +1,5 @@
 [package]
 org = "digitalpaymentshub"
-name = "drivers.util"
-version = "0.0.14"
+name = "driver.utils"
+version = "0.0.15"
 distribution = "2201.10.0"

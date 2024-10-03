@@ -14,9 +14,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type DriverMetadata readonly & record {
-
+public type DriverMetadata readonly & record {| 
     string driverName;
     string countryCode;
-    string paymentEndpoint;
-};
+    string driverApiEndpoint;
+    AccountsLookUp[] accountsLookUp;
+|};
+
+public type AccountsLookUp readonly & record {|
+    string 'type;
+    string description;
+|};
