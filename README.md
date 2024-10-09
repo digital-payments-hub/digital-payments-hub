@@ -18,12 +18,10 @@ The **Open Digital Payments Hub** is an open-source platform designed to facilit
   - [Building the Sample Drivers](#building-the-sample-drivers)
   - [Building the Mock Payment Networks](#building-the-mock-payment-networks)
 - [Run Instructions](#run-instructions)
-  - [Running the Hub](#running-the-hub)
-  - [Running the Sample Drivers](#running-the-sample-drivers)
-  - [Running the Mock Payment Networks](#running-the-mock-payment-networks)
-  - [Performing a Mock Transaction](#performing-a-mock-transaction)
-- [Contributing](#contributing)
-- [License](#license)
+  - [Starting the Hub](#starting-the-hub)
+  - [Starting the ypay payment network](#starting-the-ypay-payment-network)
+  - [Starting the drivers](#starting-the-drivers)
+  - [Performing a mock transaction](#performing-a-mock-transaction)
 
 ## Build Instructions
 
@@ -141,7 +139,7 @@ Navigate to the drivers/xpay and drivers/ypay directories and execute the follow
     bal run
 ```
 
-### Executing a mock transaction
+### Performing a mock transaction
 
 Navigate to the mock/xpay-network directory and execute the following command to send a mock payment request
 
