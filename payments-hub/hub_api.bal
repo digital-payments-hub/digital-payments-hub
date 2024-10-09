@@ -28,7 +28,7 @@ public function main() {
 service /payments\-hub on new http:Listener(port) {
 
     resource function post cross\-border/payments(@http:Header string Country\-Code, @http:Header string
-            X\-Correlation\-ID, @http:Payload models:TransactionsRequest payload) returns json {
+            X\-Correlation\-ID, @http:Payload models:TransactionsRequest payload) returns json|models:ErrorResponse {
 
         log:printDebug(string `Received payment request payload: ${payload.toJsonString()}. CorrelationID: 
             ${X\-Correlation\-ID}`);
@@ -66,13 +66,14 @@ service /payments\-hub on new http:Listener(port) {
     }
 
     resource function post register(@http:Payload models:DriverRegisterModel registerPayload)
-        returns models:DriverRegisterModel {
+        returns models:DriverRegisterModel|http:BadRequest {
 
         log:printDebug("Received driver registration request");
         return registerDriver(registerPayload);
     }
 
-    resource function get register/[string countryCode]() returns models:DriverRegisterModel|http:NotFound {
+    resource function get register/[string countryCode]()
+        returns models:DriverRegisterModel|http:NotFound {
 
         log:printDebug("Received get registration data request for country code " + countryCode);
         models:DriverRegisterModel? registrationData = getDriverRegistrationData(countryCode);
@@ -81,5 +82,20 @@ service /payments\-hub on new http:Listener(port) {
         } else {
             return registrationData;
         }
+    }
+
+    resource function put register/[string countryCode](@http:Payload models:DriverRegisterModel registerPayload)
+        returns models:DriverRegisterModel|http:NotFound|http:BadRequest {
+
+        // ToDo: Implement update logic
+        return registerPayload;
+    }
+
+    resource function delete register/[string countryCode]()
+        returns http:NoContent|http:NotFound {
+
+        log:printDebug("Received delete registration data request for country code " + countryCode);
+        // ToDo: Implement delete logic
+        return http:NO_CONTENT;
     }
 }

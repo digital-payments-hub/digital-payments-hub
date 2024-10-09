@@ -31,8 +31,8 @@ json receivedData = {
 };
 
 # A service representing a network-accessible API
-# bound to port `9090`.
-service /v1/picasso\-guard/banks/nad/v2 on new http:Listener(9301) {
+# bound to port `8300`.
+service /v1/picasso\-guard/banks/nad/v2 on new http:Listener(8300) {
 
     # Inbound endpoint of LanakPay ISO 8583 messages.
     #
@@ -107,7 +107,7 @@ service /v1/picasso\-guard/banks/nad/v2 on new http:Listener(9301) {
         };
 
         log:printDebug(string `[YPay Payment Switch] Fund transfer detials received [id: ${xBusinessMsgId}].`, Message = receivedData.toJson());
-    
+
         models:FundTransferResponse response = {
             data: {
                 businessMessageId: xBusinessMsgId,
@@ -136,7 +136,7 @@ function getAccounts(string mobileNumber) returns models:Regn[] {
 
     match mobileNumber {
         "0060412341234" =>
-            {
+        {
             return [
                 {
                     RegnId: "0075800025",

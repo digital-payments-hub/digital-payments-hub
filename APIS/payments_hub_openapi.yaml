@@ -1,0 +1,353 @@
+openapi: 3.0.1
+info:
+  title: Payments Hub
+  version: 0.0.16
+servers:
+- url: "{server}:{port}/payments-hub"
+  variables:
+    server:
+      default: http://localhost
+    port:
+      default: port
+paths:
+  /cross-border/payments:
+    post:
+      operationId: postCrossBorderPayments
+      parameters:
+      - name: Country-Code
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: X-Correlation-ID
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionsRequest'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                - $ref: '#/components/schemas/ErrorResponse'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+  /cross-border/accounts/look-up:
+    post:
+      operationId: postCrossBorderAccountsLookUp
+      parameters:
+      - name: Country-Code
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: X-Correlation-ID
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountLookupRequest'
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                required:
+                - account
+                - proxy
+                type: object
+                properties:
+                  proxy:
+                    $ref: '#/components/schemas/Proxy'
+                  account:
+                    $ref: '#/components/schemas/Account'
+                  metadata:
+                    type: object
+                    additionalProperties:
+                      type: string
+                additionalProperties: false
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                - $ref: '#/components/schemas/ErrorResponse'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+  /discover:
+    get:
+      operationId: getDiscover
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DriverRegisterModel'
+  /discover/{countryCode}:
+    get:
+      operationId: getDiscoverCountrycode
+      parameters:
+      - name: countryCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverRegisterModel'
+        "404":
+          description: NotFound
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+  /register:
+    post:
+      operationId: postRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverRegisterModel'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverRegisterModel'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+  /register/{countryCode}:
+    get:
+      operationId: getRegisterCountrycode
+      parameters:
+      - name: countryCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverRegisterModel'
+        "404":
+          description: NotFound
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+    put:
+      operationId: putRegisterCountrycode
+      parameters:
+      - name: countryCode
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverRegisterModel'
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverRegisterModel'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+        "404":
+          description: NotFound
+    delete:
+      operationId: deleteRegisterCountrycode
+      parameters:
+      - name: countryCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: NoContent
+        "404":
+          description: NotFound
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+components:
+  schemas:
+    Account:
+      required:
+      - accountId
+      - agentId
+      - name
+      type: object
+      properties:
+        agentId:
+          type: string
+        name:
+          type: string
+        accountId:
+          type: string
+    AccountLookupRequest:
+      required:
+      - proxyType
+      - proxyValue
+      type: object
+      properties:
+        proxyType:
+          type: string
+        proxyValue:
+          type: string
+        bicCode:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    AccountsLookUp:
+      required:
+      - description
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+        description:
+          type: string
+      additionalProperties: false
+    DriverMetadata:
+      required:
+      - countryCode
+      - driverName
+      type: object
+      properties:
+        driverName:
+          type: string
+        countryCode:
+          type: string
+        accountsLookUp:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountsLookUp'
+      additionalProperties: false
+    DriverRegisterModel:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DriverMetadata'
+      - required:
+        - driverGatewayUrl
+        type: object
+        properties:
+          driverGatewayUrl:
+            type: string
+        additionalProperties: false
+    ErrorPayload:
+      required:
+      - message
+      - method
+      - path
+      - reason
+      - status
+      - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        method:
+          type: string
+    ErrorResponse:
+      required:
+      - errorCode
+      - errorDescription
+      - statusCode
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+        errorCode:
+          type: string
+        errorDescription:
+          type: string
+    Proxy:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+    TransactionsRequest:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          type: object
