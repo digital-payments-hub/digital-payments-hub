@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The **Open Digital Payments Hub** is an open-source platform designed to facilitate secure and efficient financial transactions between countries. A group of countries/region can host this hub, allowing each country to develop and register its own payment driver. Once registered, countries can perform financial transactions with other countries regtistered in the hub. This project includes two sample drivers as reference implementations, written in Ballerina, but countries can use a language of their preference to write their drivers.
+The **Open Digital Payments Hub** is an open-source platform designed to facilitate secure and efficient financial transactions between countries. A group of countries or a region can host this hub, allowing each country to develop and register its own payment driver. Once registered, countries can perform financial transactions with other countries registered in the hub. This project includes two sample drivers as reference implementations, written in Ballerina, but countries can use a language of their preference to write their drivers.
 
 ## Features
 
