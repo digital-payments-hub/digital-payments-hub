@@ -87,6 +87,7 @@ service /payments\-hub on new http:Listener(port) {
     resource function put register/[string countryCode](@http:Payload models:DriverRegisterModel registerPayload)
         returns models:DriverRegisterModel|http:NotFound|http:BadRequest {
 
+        log:printDebug("Received update registration data request for country code " + countryCode);
         // ToDo: Implement update logic
         return registerPayload;
     }
